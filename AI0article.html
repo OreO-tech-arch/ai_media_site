@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024年 世界のリモートワーク動向: インタラクティブ・レポート</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    sans: ['"Helvetica Neue"', 'Arial', '"Hiragino Kaku Gothic ProN"', '"Hiragino Sans"', '"Meiryo"', 'sans-serif'],
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* チャートコンテナのスタイル */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* タブ切り替えのアニメーション */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🌍</span>
+                    <h1 class="text-xl font-bold tracking-tight text-stone-900">WorkTrends<span class="text-teal-600">2024</span></h1>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#models" class="text-stone-500 hover:text-teal-600 transition-colors">勤務形態</a>
+                    <a href="#sentiment" class="text-stone-500 hover:text-teal-600 transition-colors">意識調査</a>
+                    <a href="#economics" class="text-stone-500 hover:text-teal-600 transition-colors">経済効果</a>
+                    <a href="#human-factor" class="text-stone-500 hover:text-teal-600 transition-colors">人的要因</a>
+                </div>
+                <button onclick="window.print()" class="text-sm bg-stone-100 px-3 py-1 rounded hover:bg-stone-200 transition">レポートを印刷</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <section class="text-center space-y-6">
+            <h2 class="text-4xl font-extrabold text-stone-900 tracking-tight sm:text-5xl">2024年 リモートワークの実態</h2>
+            <p class="max-w-2xl mx-auto text-lg text-stone-600 leading-relaxed">
+                本レポートは、世界5,000社以上のデータを統合・分析したものです。
+                重要な結論：<strong>「ハイブリッドワーク」は過渡期のものではなく、最終的な着地点となりました。</strong>
+                企業が生産性、コスト、企業文化のバランスをどのように取っているか、以下のデータで解説します。
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-2">📊</div>
+                    <div class="text-3xl font-bold text-teal-600">62%</div>
+                    <div class="text-sm font-semibold text-stone-500 uppercase tracking-wide">ハイブリッド導入率</div>
+                    <p class="text-xs text-stone-400 mt-2">2022年から12%増加</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-2">💸</div>
+                    <div class="text-3xl font-bold text-amber-500">$11k</div>
+                    <div class="text-sm font-semibold text-stone-500 uppercase tracking-wide">従業員1人あたりの削減額</div>
+                    <p class="text-xs text-stone-400 mt-2">オフィス縮小によるコスト減</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-2">🧠</div>
+                    <div class="text-3xl font-bold text-rose-500">44%</div>
+                    <div class="text-sm font-semibold text-stone-500 uppercase tracking-wide">バーンアウトのリスク</div>
+                    <p class="text-xs text-stone-400 mt-2">デジタルワーカーの自己申告に基づく</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="models" class="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-4 order-2 lg:order-1">
+                    <h3 class="text-2xl font-bold text-stone-800">ハイブリッドワークの定着</h3>
+                    <p class="text-stone-600 leading-relaxed">
+                        「オフィス回帰（RTO）」の号令は、構造化されたハイブリッドモデルへと落ち着きを見せています。
+                        2022年は完全リモートと強制出社が混在する混乱期でしたが、2024年のデータは安定を示しています。
+                        多くの企業が「週2〜3日の出社」という構造化されたハイブリッド方式を採用しています。
+                    </p>
+                    
+                    <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                        <h4 class="font-semibold text-sm text-stone-700 mb-2">インタラクティブ分析:</h4>
+                        <p class="text-sm text-stone-500 mb-4">以下のボタンをクリックして、過去2年間のポリシー推移を比較してください。</p>
+                        <div class="flex space-x-4">
+                            <button id="btn-2022" class="flex-1 py-2 px-4 rounded bg-stone-200 text-stone-600 hover:bg-stone-300 font-medium transition active-btn-group">2022年のデータ</button>
+                            <button id="btn-2024" class="flex-1 py-2 px-4 rounded bg-teal-600 text-white shadow-md font-medium transition active-btn-group">2024年のデータ</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <div class="chart-container">
+                        <canvas id="workModelChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-stone-400 mt-4">出典: グローバル人事調査 2024年第3四半期</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sentiment" class="space-y-6">
+            <div class="max-w-3xl">
+                <h3 class="text-2xl font-bold text-stone-800">「生産性」に対する認識のズレ</h3>
+                <p class="text-stone-600 mt-2">
+                    本レポートの重要な発見は、マネージャー層と現場社員の間にある「生産性」に対する認識の乖離です。
+                    社員は在宅の方が生産的だと感じていますが、マネージャーは「見えないこと」を生産性の損失と捉える傾向があります。
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-stone-200">
+                <div class="flex justify-between items-center mb-6">
+                    <h4 class="font-bold text-lg text-stone-700">調査結果: 同意の割合</h4>
+                    <select id="metricSelect" class="bg-stone-100 border-none text-sm font-medium text-stone-700 py-2 px-4 rounded focus:ring-2 focus:ring-teal-500 cursor-pointer">
+                        <option value="productivity">テーマ: 生産性について</option>
+                        <option value="culture">テーマ: 企業文化について</option>
+                    </select>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="perceptionChart"></canvas>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r text-sm text-yellow-800">
+                    <strong>インサイト:</strong> 「生産性のパラノイア」は実在します。マネージャーは可視性の欠如により生産性が23%低下したと感じていますが、社員はアウトプットベースで15%の生産性向上を報告しています。
+                </div>
+            </div>
+        </section>
+
+        <section id="economics" class="bg-stone-900 text-stone-50 rounded-3xl p-8 md:p-12 overflow-hidden relative">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-teal-900 rounded-full opacity-50 blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+                <div>
+                    <h3 class="text-3xl font-bold text-white mb-4">経済的インパクト</h3>
+                    <p class="text-stone-300 leading-relaxed mb-8">
+                        ハイブリッドワークへの移行は文化的な側面だけでなく、財務的な側面も持ち合わせています。オフィス面積と固定費の削減は大きな利益を生み出します。
+                        本レポートの平均値（<strong>リモート/ハイブリッド社員1人あたり年間$11,000の削減</strong>）に基づき、潜在的な削減額を試算してみてください。
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label for="employeeRange" class="block text-sm font-medium text-teal-400 mb-2">従業員数（人）</label>
+                            <input type="range" id="employeeRange" min="10" max="1000" value="100" step="10" 
+                                class="w-full h-2 bg-stone-700 rounded-lg appearance-none cursor-pointer accent-teal-500 hover:accent-teal-400">
+                            <div class="flex justify-between text-xs text-stone-500 mt-2">
+                                <span>10</span>
+                                <span id="empCountDisplay" class="text-white font-mono text-lg">100</span>
+                                <span>1,000</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-teal-400 mb-2">オフィス縮小の目標</label>
+                            <div class="flex gap-2">
+                                <button class="savings-btn flex-1 py-2 bg-stone-800 rounded border border-stone-700 hover:border-teal-500 text-sm transition" data-percent="0.2">保守的 (20%)</button>
+                                <button class="savings-btn flex-1 py-2 bg-teal-900 border border-teal-600 text-white rounded text-sm transition ring-2 ring-teal-500" data-percent="0.5">積極的 (50%)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center bg-stone-800/50 rounded-2xl p-8 border border-stone-700 backdrop-blur-sm">
+                    <h4 class="text-stone-400 uppercase tracking-widest text-xs font-bold mb-2">推定される年間削減額</h4>
+                    <div id="savingsDisplay" class="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-300 mb-4">
+                        $550,000
+                    </div>
+                    <p class="text-stone-400 text-center text-sm">
+                        *2024年の分析で示された施設費、光熱費、離職コストの平均削減額に基づきます。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="human-factor" class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h3 class="text-2xl font-bold text-stone-800">人的要因：課題とトレンド</h3>
+                <p class="text-stone-600 mt-2">数値指標が改善する一方で、人間の体験は複雑化しています。従業員インタビューで特定された定性的なテーマを探ります。</p>
+            </div>
+
+            <div class="flex justify-center mb-8 border-b border-stone-200">
+                <button class="tab-btn px-6 py-3 text-sm font-bold text-teal-600 border-b-2 border-teal-600 focus:outline-none transition-colors" data-tab="burnout">
+                    🔥 デジタル・バーンアウト
+                </button>
+                <button class="tab-btn px-6 py-3 text-sm font-medium text-stone-500 border-b-2 border-transparent hover:text-stone-800 focus:outline-none transition-colors" data-tab="isolation">
+                    🏝️ 社会的孤立
+                </button>
+                <button class="tab-btn px-6 py-3 text-sm font-medium text-stone-500 border-b-2 border-transparent hover:text-stone-800 focus:outline-none transition-colors" data-tab="tech">
+                    💻 テクノロジー格差
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-stone-100 min-h-[200px]">
+                
+                <div id="burnout" class="tab-content active">
+                    <h4 class="text-xl font-bold text-stone-800 mb-3">「常時接続」の文化</h4>
+                    <p class="text-stone-600 mb-4">
+                        リモートワーカーの44%が、オフィス勤務者よりも高いレベルの燃え尽き症候群（バーンアウト）を報告しています。「家庭」と「仕事」の境界線が曖昧になり、1日あたりの平均労働時間が<strong>1.5時間増加</strong>しました。
+                    </p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start text-sm text-stone-600">
+                            <span class="mr-2 text-teal-500">✓</span> 推奨事項： 「コア・コラボレーション・タイム」の設定と、厳格な「連絡禁止時間」の導入。
+                        </li>
+                        <li class="flex items-start text-sm text-stone-600">
+                            <span class="mr-2 text-teal-500">✓</span> 推奨事項： 「フェイク通勤」（仕事の開始/終了を合図する切り替え活動）の推奨。
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="isolation" class="tab-content">
+                    <h4 class="text-xl font-bold text-stone-800 mb-3">ソーシャル・キャピタルの浸食</h4>
+                    <p class="text-stone-600 mb-4">
+                        最も影響を受けているのは新規採用者です。データによると、リモートでオンボーディングされた従業員は、2020年以前の採用者に比べて組織内での<strong>強いつながりが30%少ない</strong>ことが判明しました。
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="bg-stone-50 p-3 rounded">
+                            <span class="block font-bold text-teal-600">雑談効果の消失</span>
+                            <span class="text-xs text-stone-500">偶発的なイノベーションが減少。</span>
+                        </div>
+                        <div class="bg-stone-50 p-3 rounded">
+                            <span class="block font-bold text-teal-600">メンターシップ</span>
+                            <span class="text-xs text-stone-500">若手社員が「見て学ぶ」機会の喪失。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tech" class="tab-content">
+                    <h4 class="text-xl font-bold text-stone-800 mb-3">インフラの不平等</h4>
+                    <p class="text-stone-600 mb-4">
+                        生産性は、自宅のインターネット速度や執務環境に大きく依存します。労働力の15%は専用のワークスペースを持っておらず、社会経済的地位に基づく「生産性格差」が生じています。
+                    </p>
+                    <p class="text-sm italic text-stone-500">"在宅勤務機材への補助金を支給した企業では、満足度スコアが12%向上した。"</p>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="border-t border-stone-200 pt-8 pb-12 text-center">
+            <p class="text-stone-400 text-sm">2024年 グローバル・ワークフォース・レポートに基づく分析。</p>
+            <div class="flex justify-center space-x-4 mt-4 text-2xl grayscale opacity-50">
+                <span>🏢</span> <span>🌐</span> <span>📊</span>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- データストア (翻訳済み) ---
+        const reportData = {
+            workModels: {
+                2022: {
+                    labels: ['完全リモート', 'ハイブリッド (固定)', '完全出社', 'ハイブリッド (柔軟)'],
+                    data: [35, 20, 30, 15]
+                },
+                2024: {
+                    labels: ['完全リモート', 'ハイブリッド (固定)', '完全出社', 'ハイブリッド (柔軟)'],
+                    data: [15, 62, 10, 13]
+                }
+            },
+            sentiment: {
+                productivity: {
+                    labels: ['一般社員', 'マネージャー', '役員'],
+                    employeeView: [85, 70, 60], // 生産的だと感じている%
+                    managerView: [65, 55, 45]  // 生産的だと認識されている%
+                },
+                culture: {
+                    labels: ['一般社員', 'マネージャー', '役員'],
+                    employeeView: [40, 55, 80], // つながりを感じている%
+                    managerView: [50, 70, 90]  // つながりがあると認識している%
+                }
+            }
+        };
+
+        // --- チャート初期化 ---
+        
+        // 1. 勤務形態 ドーナツチャート
+        const ctxModel = document.getElementById('workModelChart').getContext('2d');
+        let modelChart = new Chart(ctxModel, {
+            type: 'doughnut',
+            data: {
+                labels: reportData.workModels[2024].labels,
+                datasets: [{
+                    data: reportData.workModels[2024].data,
+                    backgroundColor: [
+                        '#14b8a6', // Teal 500
+                        '#0d9488', // Teal 600 (Dominant)
+                        '#f59e0b', // Amber 500
+                        '#d6d3d1'  // Stone 300
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // レスポンシブ対応に重要
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, font: { family: 'sans-serif' } }
+                    },
+                    title: {
+                        display: true,
+                        text: '勤務形態の分布 (2024年)',
+                        font: { size: 16 }
+                    }
+                },
+                layout: { padding: 10 }
+            }
+        });
+
+        // 2. 意識調査 棒グラフ
+        const ctxSentiment = document.getElementById('perceptionChart').getContext('2d');
+        let sentimentChart = new Chart(ctxSentiment, {
+            type: 'bar',
+            data: {
+                labels: reportData.sentiment.productivity.labels,
+                datasets: [
+                    {
+                        label: '自己評価',
+                        data: reportData.sentiment.productivity.employeeView,
+                        backgroundColor: '#14b8a6',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'マネージャーの評価',
+                        data: reportData.sentiment.productivity.managerView,
+                        backgroundColor: '#78716c', // Stone 500
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: '割合 (%)' },
+                        grid: { color: '#f5f5f4' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- インタラクションロジック ---
+
+        // 1. 勤務形態の切り替え (年別)
+        document.getElementById('btn-2022').addEventListener('click', function() {
+            updateModelChart(2022);
+            toggleBtnStyle(this, document.getElementById('btn-2024'));
+        });
+
+        document.getElementById('btn-2024').addEventListener('click', function() {
+            updateModelChart(2024);
+            toggleBtnStyle(this, document.getElementById('btn-2022'));
+        });
+
+        function updateModelChart(year) {
+            modelChart.data.labels = reportData.workModels[year].labels;
+            modelChart.data.datasets[0].data = reportData.workModels[year].data;
+            modelChart.options.plugins.title.text = `勤務形態の分布 (${year}年)`;
+            modelChart.update();
+        }
+
+        function toggleBtnStyle(active, inactive) {
+            // Tailwindクラスの適用 (アクティブ状態)
+            active.classList.remove('bg-stone-200', 'text-stone-600');
+            active.classList.add('bg-teal-600', 'text-white', 'shadow-md');
+            
+            // Tailwindクラスの適用 (非アクティブ状態)
+            inactive.classList.remove('bg-teal-600', 'text-white', 'shadow-md');
+            inactive.classList.add('bg-stone-200', 'text-stone-600');
+        }
+
+        // 2. 意識調査指標の切り替え
+        document.getElementById('metricSelect').addEventListener('change', function(e) {
+            const metric = e.target.value;
+            const data = reportData.sentiment[metric];
+            
+            sentimentChart.data.labels = data.labels;
+            sentimentChart.data.datasets[0].data = data.employeeView;
+            sentimentChart.data.datasets[1].data = data.managerView;
+            sentimentChart.update();
+        });
+
+        // 3. 経済効果シミュレーターのロジック
+        const empInput = document.getElementById('employeeRange');
+        const empDisplay = document.getElementById('empCountDisplay');
+        const savingsDisplay = document.getElementById('savingsDisplay');
+        const savingsBtns = document.querySelectorAll('.savings-btn');
+        
+        let savingsPerEmployee = 11000; // 1人あたりの削減額ベース (USD)
+        let reductionFactor = 0.5; // デフォルトは積極的 (50%)
+
+        function calculateSavings() {
+            const count = parseInt(empInput.value);
+            empDisplay.textContent = count;
+            
+            // 計算式: 従業員数 * 削減ベース * 削減係数
+            const total = count * savingsPerEmployee * reductionFactor;
+            
+            // 通貨フォーマット (USDのままにしていますが、必要であれば 'ja-JP', 'JPY' に変更可能)
+            savingsDisplay.textContent = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(total);
+        }
+
+        empInput.addEventListener('input', calculateSavings);
+
+        savingsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // 係数の更新
+                reductionFactor = parseFloat(e.target.dataset.percent);
+                
+                // スタイルの更新
+                savingsBtns.forEach(b => {
+                    b.classList.remove('bg-teal-900', 'text-white', 'ring-2', 'ring-teal-500', 'border-teal-600');
+                    b.classList.add('bg-stone-800', 'border-stone-700');
+                });
+                e.target.classList.remove('bg-stone-800', 'border-stone-700');
+                e.target.classList.add('bg-teal-900', 'text-white', 'ring-2', 'ring-teal-500', 'border-teal-600');
+
+                calculateSavings();
+            });
+        });
+
+        // 4. 定性分析セクションのタブロジック
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 全て非アクティブ化
+                tabs.forEach(t => {
+                    t.classList.remove('text-teal-600', 'border-teal-600', 'font-bold');
+                    t.classList.add('text-stone-500', 'border-transparent', 'font-medium');
+                });
+                contents.forEach(c => c.classList.remove('active'));
+
+                // クリックされたものをアクティブ化
+                tab.classList.remove('text-stone-500', 'border-transparent', 'font-medium');
+                tab.classList.add('text-teal-600', 'border-teal-600', 'font-bold');
+                
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // シミュレーター初期化
+        calculateSavings();
+
+    </script>
+</body>
+</html>

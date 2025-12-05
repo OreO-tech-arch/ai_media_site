@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="post">
+        <h1>{{ post.title }}</h1>
+        <div class="date">
+            {{ post.created_date }}
+            {% if post.ai_tool_name %}
+             | Tool: {{ post.ai_tool_name }}
+            {% endif %}
+        </div>
+        <hr style="border:0; border-top:1px solid #eee; margin:20px 0;">
+        
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+
+    <a href="{% url 'post_list' %}" class="back-btn">← 記事一覧に戻る</a>
+{% endblock %}

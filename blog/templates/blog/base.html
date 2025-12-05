@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tech Blog</title>
+    <style>
+        body { font-family: "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; color: #333; }
+        /* ヘッダーのデザイン */
+        header { background-color: #263238; color: white; padding: 20px 0; margin-bottom: 40px; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 1.5rem; }
+        header a { color: white; text-decoration: none; }
+        
+        /* 全体の枠組み */
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; }
+        
+        /* 記事カードのデザイン */
+        .post { background: white; padding: 30px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .post:hover { transform: translateY(-2px); }
+        .post h2 a { color: #263238; text-decoration: none; }
+        .date { color: #90a4ae; font-size: 0.85rem; margin-bottom: 10px; }
+        
+        /* 詳細ページ用 */
+        .back-btn { display: inline-block; margin-top: 30px; padding: 10px 20px; background: #eceff1; color: #263238; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .back-btn:hover { background: #cfd8dc; }
+        
+        /* フッター */
+        footer { text-align: center; padding: 40px 0; color: #90a4ae; font-size: 0.8rem; margin-top: 50px; border-top: 1px solid #eceff1; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1><a href="/">🚀 AI Tech Blog</a></h1>
+            <nav>
+                </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 AI Tech Blog / Powered by Django</p>
+    </footer>
+
+</body>
+</html>
